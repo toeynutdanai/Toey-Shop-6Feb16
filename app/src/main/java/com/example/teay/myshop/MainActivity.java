@@ -5,6 +5,9 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,12 +25,18 @@ public class MainActivity extends AppCompatActivity {
 
     //Explicit
     private MyManage objMyManage;
+    private EditText userEditText, passwordEditText;
+    private String userString, passwordString;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //BindWidget ผูกตัวแปร
+        userEditText = (EditText) findViewById(R.id.editText);
+        passwordEditText = (EditText) findViewById(R.id.editText2);
 
         //Request Database
         objMyManage = new MyManage(this);
@@ -43,6 +52,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     }   // Main Method
+
+    public void clickLogin(View view) {
+
+        //Check Space trim ตัดช่องว่าง
+        userString = userEditText.getText().toString().trim();
+        passwordString = passwordEditText.getText().toString().trim();
+
+        if (userString.equals("") || passwordEditText.equals("")) {
+
+            //Have Space มีช่องว่าง
+            Toast.makeText(MainActivity.this,"กรุณากรอกให้ครบสาดดดดด", Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            //No Spacr
+
+        } // if equals=ว่างเปล่า
+
+    } //clickLogin
+
 
     private void synJSONtoSQLite() {
 

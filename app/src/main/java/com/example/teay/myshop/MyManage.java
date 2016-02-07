@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Created by teay on 2/6/2016.
+ * Created by masterUNG on 2/6/16 AD.
  */
 public class MyManage {
 
@@ -21,7 +21,7 @@ public class MyManage {
     public static final String column_name = "Name";
     public static final String column_food = "Food";
     public static final String column_price = "Price";
-    public static final String column_sorce = "Sorce";
+    public static final String column_source = "Source";
 
     public MyManage(Context context) {
 
@@ -30,8 +30,7 @@ public class MyManage {
         writeSqLiteDatabase = objMyOpenHelper.getWritableDatabase();
         readSqLiteDatabase = objMyOpenHelper.getReadableDatabase();
 
-
-    }//Constructor
+    }   // Constructor
 
     public long addNewValue(int intTable,
                             String strColumn2,
@@ -54,12 +53,14 @@ public class MyManage {
 
                 objContentValues.put(column_food, strColumn2);
                 objContentValues.put(column_price, strColumn3);
-                objContentValues.put(column_sorce, strColumn4);
-                writeSqLiteDatabase.insert(user_TABLE, null, objContentValues);
+                objContentValues.put(column_source, strColumn4);
+                writeSqLiteDatabase.insert(food_TABLE, null, objContentValues);
+
                 break;
-        } //switch
+        }   // switch
 
         return longReturn;
-
     }
-} //main class
+
+
+}   // Main Class

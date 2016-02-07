@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     //Explicit
     private MyManage objMyManage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
         synJSONtoSQLite();
 
 
-    }//main method
+    }   // Main Method
 
     private void synJSONtoSQLite() {
 
-        //change Policy
+        //Change Policy
         StrictMode.ThreadPolicy myPolicy = new StrictMode.ThreadPolicy
                 .Builder().permitAll().build();
         StrictMode.setThreadPolicy(myPolicy);
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         while (intTable <= 2) {
 
-            //1. Create InputStream(การโหลดไป ประมวลผลไป)
+            //1. Create InputStream
             InputStream objInputStream = null;
             String strURLuser = "http://swiftcodingthai.com/6feb/php_get_data_toey.php";
             String strURLfood = "http://swiftcodingthai.com/6feb/php_get_data_food.php";
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
                 HttpClient objHttpClient = new DefaultHttpClient();
                 switch (intTable) {
-
                     case 1:
                         objHttpPost = new HttpPost(strURLuser);
                         break;
@@ -74,45 +74,43 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     default:
                         break;
-                } //switch
+                }   // switch
 
                 HttpResponse objHttpResponse = objHttpClient.execute(objHttpPost);
                 HttpEntity objHttpEntity = objHttpResponse.getEntity();
                 objInputStream = objHttpEntity.getContent();
 
+
             } catch (Exception e) {
                 Log.d(tag, "InputStream ==> " + e.toString());
             }
 
-            //2. Create JSON String(เอาสิ่งที่โหลดเปลี่ยนเป็นสตริง)
+
+            //2. Create JSON String
             String strJSON = null;
 
             try {
 
-                BufferedReader objBufferedReader = new BufferedReader(new InputStreamReader(objInputStream, "UTF-8")); //ขนย้ายเชือก
-                StringBuilder objStringBuilder = new StringBuilder(); //ผูกเชือก
+                BufferedReader objBufferedReader = new BufferedReader(new InputStreamReader(objInputStream, "UTF-8"));
+                StringBuilder objStringBuilder = new StringBuilder();
                 String strLine = null;
 
                 while ((strLine = objBufferedReader.readLine()) != null ) {
                     objStringBuilder.append(strLine);
-
-
-                } //while
+                }   // while
 
                 objInputStream.close();
                 strJSON = objStringBuilder.toString();
-
-
 
             } catch (Exception e) {
                 Log.d(tag, "strJSON ==> " + e.toString());
             }
 
-            //3. Update SQLite(เปลี่ยนข้อมูลให้อัพโหลดได้ และอัพขึ้น SQLite๗
+            //3. Update SQLite
             try {
 
                 JSONArray objJsonArray = new JSONArray(strJSON);
-                for (int i = 0; i < objJsonArray.length(); i++) {
+                for (int i=0;i<objJsonArray.length();i++) {
 
                     JSONObject jsonObject = objJsonArray.getJSONObject(i);
 
@@ -132,25 +130,25 @@ public class MainActivity extends AppCompatActivity {
                             //Get Value From foodTABLE
                             String strFood = jsonObject.getString(MyManage.column_food);
                             String strPrice = jsonObject.getString(MyManage.column_price);
-                            String strSource = jsonObject.getString(MyManage.column_sorce);
+                            String strSource = jsonObject.getString(MyManage.column_source);
 
                             objMyManage.addNewValue(1, strFood, strPrice, strSource);
 
                             break;
-                    }
+                    }   //switch
 
-                } //for
+                }   // for
+
 
             } catch (Exception e) {
-                Log.d(tag, "Update ==>" + e.toString());
+                Log.d(tag, "Update ==> " + e.toString());
             }
 
+
+
             intTable += 1;
-
-
-        }//while
-
-    }//synJSONtoSQLite
+        }   // while
+    }   // synJSONtoSQLite
 
     private void cleanData() {
 
@@ -159,14 +157,14 @@ public class MainActivity extends AppCompatActivity {
         objSqLiteDatabase.delete(MyManage.food_TABLE, null, null);
         objSqLiteDatabase.delete(MyManage.user_TABLE, null, null);
 
-    }//cleanData
+    }   //cleanData
 
     private void testAddValue() {
 
-        for (int i = 0; i <= 1; i++) {
+        for (int i=0;i<=1;i++) {
             objMyManage.addNewValue(i, "test1", "test2", "test3");
-        } //for
+        }   //for
 
-    }//testAddValue
+    }   // testAddValue
 
-} //main class
+}   // Main Class

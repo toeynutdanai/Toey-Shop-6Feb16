@@ -2,7 +2,9 @@ package com.example.teay.myshop;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.EditText;
 
 /**
  * Created by masterUNG on 2/6/16 AD.
@@ -31,6 +33,38 @@ public class MyManage {
         readSqLiteDatabase = objMyOpenHelper.getReadableDatabase();
 
     }   // Constructor
+
+    public String[] searchUser(String strUser) {
+
+        try {
+
+            String[] resultStrings = null;
+            Cursor objCursor = readSqLiteDatabase.query(user_TABLE,
+                    new String[]{column_id, column_user, column_pass, column_name},
+                    column_user + "=?",
+                    new String[]{String.valueOf(strUser)},
+                    null, null, null, null);
+
+            if (objCursor != null) {
+                if (objCursor.moveToFirst()) {
+
+                    resultStrings = new String[4];
+                    for (int i = 0; i < 4; i++) {
+                        resultStrings[i] = objCursor.getString(i);
+                    }
+
+                }//if2
+            } //if1
+            objCursor.close();
+            return resultStrings;
+
+
+        } catch (Exception e) {
+            return null;
+        }
+
+        //return new String[0];
+    }
 
     public long addNewValue(int intTable,
                             String strColumn2,

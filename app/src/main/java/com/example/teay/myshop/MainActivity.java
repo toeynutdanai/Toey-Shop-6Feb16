@@ -62,15 +62,38 @@ public class MainActivity extends AppCompatActivity {
         if (userString.equals("") || passwordEditText.equals("")) {
 
             //Have Space มีช่องว่าง
-            Toast.makeText(MainActivity.this,"กรุณากรอกให้ครบสาดดดดด", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,
+                    "กรุณากรอกให้ครบสาดดดดด",
+                    Toast.LENGTH_SHORT).show();
 
         } else {
 
-            //No Spacr
+            //No Space
+            checkAuthen();
 
         } // if equals=ว่างเปล่า
 
     } //clickLogin
+
+    private void checkAuthen() {
+
+        try {
+
+            String[] resultStrings = objMyManage.searchUser(userString);
+            if (passwordString.equals(resultStrings[2])) {
+                //Intent To Service
+
+            } else {
+                Toast.makeText(MainActivity.this,
+                        "Password ผิด",Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this,
+                    "ไม่มี" + userString + "ในฐานข้อมูลของเรา",
+                    Toast.LENGTH_SHORT).show();
+        }
+    } //checkAuthen
 
 
     private void synJSONtoSQLite() {

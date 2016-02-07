@@ -1,5 +1,7 @@
 package com.example.teay.myshop;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +35,38 @@ public class ServiceActivity extends AppCompatActivity {
         //Show Desk
         showDesk();
 
+        //showMenuFood
+        showMenuFood();
+
     }//main method
+
+    private void showMenuFood() {
+
+        SQLiteDatabase objSqLiteDatabase = openOrCreateDatabase(MyOpenHelper.database_name,
+                MODE_PRIVATE, null);
+        Cursor objCursor = objSqLiteDatabase.rawQuery("SELECT * FROM " + MyManage.food_TABLE, null);
+
+        int intCount = objCursor.getCount();
+        String[] foodStrings = new String[intCount];
+        String[] priceStrings = new String[intCount];
+        String[] sourceStrings = new String[intCount];
+
+        objCursor.moveToFirst();
+        for (int i = 0; i < intCount; i++) {
+
+            foodStrings[i] = objCursor.getString(objCursor.getColumnIndex(MyManage.column_food));
+            priceStrings[i] = objCursor.getString(objCursor.getColumnIndex(MyManage.column_price));
+            sourceStrings[i] = objCursor.getString(objCursor.getColumnIndex(MyManage.column_source));
+
+            objCursor.moveToNext();
+        }//for
+        objCursor.close();
+
+        MyAdapter objMyAdapter = new MyAdapter(ServiceActivity.this, foodStrings,
+                priceStrings, sourceStrings);
+        foodListView.setAdapter(objMyAdapter);
+
+    }//showMenuFood
 
     private void showDesk() {
 
